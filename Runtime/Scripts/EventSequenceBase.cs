@@ -72,6 +72,7 @@ namespace jmayberry.EventSequencer {
 
 			return this.ShouldOverride(otherSequence.GetCurrentEventPriority());
         }
+
         public void OnSpawn(object spawner) { }
 
         public void OnDespawn(object spawner) { }

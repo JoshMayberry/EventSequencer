@@ -1,5 +1,5 @@
 {
-    "name": "Test_EditMode",
+    "name": "jmayberry.EventSequencer.Test.EditMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
