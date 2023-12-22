@@ -4,7 +4,7 @@ using UnityEngine;
 
 using jmayberry.EventSequencer;
 
-public class DialogManager : EventSequencerBase {
+public class DialogManager : EventManagerBase {
 	public static DialogManager instance { get; private set; }
 
 	private void Awake() {

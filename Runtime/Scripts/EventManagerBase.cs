@@ -3,21 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace jmayberry.EventSequencer {
-	public class EventSequencerBase : MonoBehaviour {
-		private EventSequence currentSequence;
+	public class EventManagerBase : MonoBehaviour {
+		private EventSequenceBase currentSequence;
 		private Coroutine currentCoroutine;
 
 		public override string ToString() {
-			return $"<EventSequencerBase:{this.GetHashCode()}>";
+			return $"<EventManagerBase:{this.GetHashCode()}>";
         }
 
-        public EventSequence StartSequence(IContext context, IEnumerable<EventBase> eventList) {
-            EventSequence sequence = new EventSequence(eventList);
-            this.StartSequence(context, sequence);
-            return sequence;
-        }
-
-        public void StartSequence(IContext context, EventSequence sequence) {
+        public void StartSequence(IContext context, EventSequenceBase sequence) {
 			if (this.currentSequence != null) {
 				if (!sequence.ShouldOverride(this.currentSequence)) {
 					return;
@@ -40,7 +34,7 @@ namespace jmayberry.EventSequencer {
 			this.currentCoroutine = null;
 		}
 
-		public EventSequence GetCurrentSequence() {
+		public EventSequenceBase GetCurrentSequence() {
 			return this.currentSequence;
 		}
 

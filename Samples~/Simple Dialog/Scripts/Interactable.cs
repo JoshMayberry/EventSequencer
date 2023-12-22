@@ -9,11 +9,12 @@ public class Interactable : MonoBehaviour {
 	[SerializeField] public List<DialogEvent> dialogEvents;
     [SerializeField] public DialogContext context = new DialogContext();
 
-    public EventSequence currentSequence;
+    public EventSequenceBase currentSequence;
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject.CompareTag("Player")) {
-			this.currentSequence = DialogManager.instance.StartSequence(this.context, this.dialogEvents);
+            this.currentSequence = new EventSequenceList(this.dialogEvents);
+            DialogManager.instance.StartSequence(this.context, this.currentSequence);
 		}
 	}
 

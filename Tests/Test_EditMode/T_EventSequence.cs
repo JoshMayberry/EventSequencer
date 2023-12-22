@@ -7,8 +7,8 @@ using jmayberry.EventSequencer;
 
 public class EventSequenceTests {
 
-	private EventSequence CreateTestSequence(params EventPriority[] priorityList) {
-		EventSequence sequence = new EventSequence();
+	private EventSequenceQueue CreateTestSequence(params EventPriority[] priorityList) {
+		EventSequenceQueue sequence = new EventSequenceQueue();
 		foreach (EventPriority priority in priorityList) {
 			sequence.AddEvent(new TestEvent(priority));
 		}
@@ -18,7 +18,7 @@ public class EventSequenceTests {
 	[Test]
 	public void AddEvent() {
 		var sequence = CreateTestSequence(EventPriority.Medium, EventPriority.Low, EventPriority.High);
-		Assert.AreEqual(3, sequence.GetEventCount());
+		Assert.AreEqual(3, sequence.eventQueue.Count);
 	}
 
 	[Test]
@@ -46,7 +46,7 @@ public class EventSequenceTests {
     public IEnumerator Start() {
         var sequence = CreateTestSequence(EventPriority.High);
         yield return sequence.Start(new TestContext());
-        Assert.AreEqual(0, sequence.GetEventCount());
+        Assert.AreEqual(0, sequence.eventQueue.Count);
     }
 
     [UnityTest]
