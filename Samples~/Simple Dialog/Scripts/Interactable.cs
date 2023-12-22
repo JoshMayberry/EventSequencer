@@ -21,7 +21,7 @@ public class Interactable : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player")) {
 			if (DialogManager.instance.GetCurrentSequence() == this.currentSequence) {
-				DialogManager.instance.StopCurrentSequence();
+				DialogManager.instance.StopSequence();
             }
 			
 			this.currentSequence = null;

@@ -11,30 +11,41 @@ namespace jmayberry.EventSequencer {
 			return $"<EventManagerBase:{this.GetHashCode()}>";
         }
 
-        public void StartSequence(IContext context, EventSequenceBase sequence) {
-			if (this.currentSequence != null) {
+        public void StartSequence(IContext context, EventSequenceBase sequence, bool hardStop = false) {
+			if (this.currentCoroutine != null) {
 				if (!sequence.ShouldOverride(this.currentSequence)) {
 					return;
 				}
 
-				this.StopCurrentSequence();
+				this.StopSequence(this.currentSequence, this.currentCoroutine, hardStop);
 			}
 
 			this.currentSequence = sequence;
 			this.currentCoroutine = StartCoroutine(this.currentSequence.Start(context));
-		}
+        }
 
-		public void StopCurrentSequence() {
-			if (this.currentCoroutine == null) {
-				return;
-			}
+        public void StopSequence(bool hardStop = false) {
+            StopSequence(this.currentSequence, this.currentCoroutine, hardStop);
+        }
 
-			StopCoroutine(this.currentCoroutine);
-			StartCoroutine(this.currentSequence.OnCancel());
-			this.currentCoroutine = null;
-		}
+        public void StopSequence(EventSequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
+            StartCoroutine(this.Cancel(sequence, coroutine, hardStop));
+            this.currentCoroutine = null;
+        }
 
-		public EventSequenceBase GetCurrentSequence() {
+        private IEnumerator Cancel(EventSequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
+            if (coroutine == null) {
+                yield break;
+            }
+
+            if (!hardStop && (sequence != null)) {
+                yield return sequence.OnCancel();
+            }
+
+            StopCoroutine(coroutine);
+        }
+
+        public EventSequenceBase GetCurrentSequence() {
 			return this.currentSequence;
 		}
 

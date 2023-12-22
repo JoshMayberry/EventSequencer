@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace jmayberry.EventSequencer {
 	public enum EventPriority {
@@ -12,8 +13,9 @@ namespace jmayberry.EventSequencer {
 
 	[Serializable]
 	public abstract class EventBase {
+		[Header("EventBase")]
         public EventPriority Priority;
-		public IContext context;
+        public IContext context;
 
 		public EventBase(EventPriority priority = EventPriority.Low) {
 			this.Priority = priority;

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using UnityEngine;
+
 using jmayberry.CustomAttributes;
 
 namespace jmayberry.EventSequencer {
 	public abstract class EventSequenceBase {
+		[Header("EventSequencer")]
 		[Readonly] public EventBase currentEvent;
 
 		public EventSequenceBase() { }
