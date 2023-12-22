@@ -2,7 +2,8 @@
     "name": "jmayberry.EventSequencer",
     "rootNamespace": "jmayberry.EventSequencer",
     "references": [
-        "jmayberry.CustomAttributes"
+        "jmayberry.CustomAttributes",
+        "jmayberry.Spawner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

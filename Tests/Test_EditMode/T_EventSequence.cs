@@ -64,7 +64,6 @@ public class EventSequenceTests {
 	}
 }
 
-
 public class TestEvent : EventBase {
 	public TestEvent(EventPriority priority) : base(priority) { }
 

@@ -5,9 +5,10 @@ using System.Linq;
 using UnityEngine;
 
 using jmayberry.CustomAttributes;
+using jmayberry.Spawner;
 
 namespace jmayberry.EventSequencer {
-	public abstract class EventSequenceBase {
+	public abstract class EventSequenceBase : ISpawnable {
 		[Header("EventSequencer")]
 		[Readonly] public EventBase currentEvent;
 
@@ -70,6 +71,9 @@ namespace jmayberry.EventSequencer {
 			}
 
 			return this.ShouldOverride(otherSequence.GetCurrentEventPriority());
-		}
-	}
+        }
+        public void OnSpawn(object spawner) { }
+
+        public void OnDespawn(object spawner) { }
+    }
 }
