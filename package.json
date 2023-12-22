@@ -1,0 +1,24 @@
+{
+	"name": "com.jmayberry.eventsequencer",
+	"displayName": "Event Sequencer",
+	"version": "1.0.0",
+	"unity": "2021.1",
+	"description": "A general event sequencer.",
+	"keywords": [
+		"event",
+		"utility"
+	],
+	"dependencies": {
+	},
+	"author": {
+		"name": "jmayberry",
+		"email": "joshua.mayberry1991@gmail.com"
+	},
+	"samples": [
+		{
+			"displayName": "Example Use",
+			"description": "Shows how to use this",
+			"path": "Samples~/Example Use"
+		}
+	]
+}

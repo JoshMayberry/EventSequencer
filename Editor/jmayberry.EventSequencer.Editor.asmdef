@@ -1,0 +1,18 @@
+{
+    "name": "jmayberry.EventSequencer.Editor",
+    "rootNamespace": "jmayberry.EventSequencer.Editor",
+    "references": [
+        "jmayberry.EventSequencer"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
