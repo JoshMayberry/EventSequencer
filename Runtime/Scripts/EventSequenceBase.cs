@@ -8,11 +8,11 @@ using jmayberry.CustomAttributes;
 using jmayberry.Spawner;
 
 namespace jmayberry.EventSequencer {
-	public abstract class EventSequenceBase : ISpawnable {
+	public abstract class EventSequenceBase : SequenceBase {
 		[Header("EventSequencer")]
 		[Readonly] public EventBase currentEvent;
 
-		public EventSequenceBase() { }
+		public EventSequenceBase() : base() { }
 		
 		public EventSequenceBase(IEnumerable<EventBase> events) {
 			this.AddEvent(events);
@@ -36,45 +36,39 @@ namespace jmayberry.EventSequencer {
 
 		public abstract EventBase GetNextEvent();
 
-		public abstract EventPriority GetCurrentEventPriority();
-
 		public virtual IEnumerable YieldEvents() {
 			while (this.HasAnotherEvent()) {
 				yield return this.GetNextEvent();
 			}
 		}
 
-		public virtual IEnumerator Start(IContext context) {
+		public override IEnumerator Start(IContext context) {
 			foreach (EventBase gameEvent in this.YieldEvents()) {
 				yield return gameEvent.Execute(context);
 			}
 		}
 
-		public virtual IEnumerator OnCancel() {
+		public override IEnumerator OnCancel() {
 			if (this.currentEvent != null) {
 				yield return this.currentEvent.OnCancel();
 				this.currentEvent = null;
 			}
 		}
 
-		public virtual bool ShouldOverride(EventPriority otherPriority) {
+		public override bool ShouldOverride(EventPriority otherPriority) {
             if (!this.HasAnotherEvent()) {
                 return false; // Avoid empty sequences overriding non-empty ones
             }
 
-            return (this.GetCurrentEventPriority() > otherPriority);
+            return base.ShouldOverride(otherPriority);
 		}
 
-		public virtual bool ShouldOverride(EventSequenceBase otherSequence) {
+		public override bool ShouldOverride(SequenceBase otherSequence) {
 			if (!this.HasAnotherEvent()) {
 				return false; // Avoid empty sequences overriding non-empty ones
 			}
 
-			return this.ShouldOverride(otherSequence.GetCurrentEventPriority());
+            return base.ShouldOverride(otherSequence);
         }
-
-        public void OnSpawn(object spawner) { }
-
-        public void OnDespawn(object spawner) { }
     }
 }

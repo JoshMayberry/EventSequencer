@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace jmayberry.EventSequencer {
 	public class EventManagerBase : MonoBehaviour {
-		private EventSequenceBase currentSequence;
+		private SequenceBase currentSequence;
 		private Coroutine currentCoroutine;
 
 		public override string ToString() {
 			return $"<EventManagerBase:{this.GetHashCode()}>";
         }
 
-        public void StartSequence(IContext context, EventSequenceBase sequence, bool hardStop = false) {
+        public void StartSequence(IContext context, SequenceBase sequence, bool hardStop = false) {
 			if (this.currentCoroutine != null) {
 				if (!sequence.ShouldOverride(this.currentSequence)) {
 					return;
@@ -28,12 +28,12 @@ namespace jmayberry.EventSequencer {
             StopSequence(this.currentSequence, this.currentCoroutine, hardStop);
         }
 
-        public void StopSequence(EventSequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
+        public void StopSequence(SequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
             StartCoroutine(this.Cancel(sequence, coroutine, hardStop));
             this.currentCoroutine = null;
         }
 
-        private IEnumerator Cancel(EventSequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
+        private IEnumerator Cancel(SequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
             if (coroutine == null) {
                 yield break;
             }
@@ -45,7 +45,7 @@ namespace jmayberry.EventSequencer {
             StopCoroutine(coroutine);
         }
 
-        public EventSequenceBase GetCurrentSequence() {
+        public SequenceBase GetCurrentSequence() {
 			return this.currentSequence;
 		}
 
