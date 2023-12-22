@@ -57,10 +57,18 @@ namespace jmayberry.EventSequencer {
 		}
 
 		public virtual bool ShouldOverride(EventPriority otherPriority) {
-			return (this.GetCurrentEventPriority() > otherPriority);
+            if (!this.HasAnotherEvent()) {
+                return false; // Avoid empty sequences overriding non-empty ones
+            }
+
+            return (this.GetCurrentEventPriority() > otherPriority);
 		}
 
 		public virtual bool ShouldOverride(EventSequenceBase otherSequence) {
+			if (!this.HasAnotherEvent()) {
+				return false; // Avoid empty sequences overriding non-empty ones
+			}
+
 			return this.ShouldOverride(otherSequence.GetCurrentEventPriority());
 		}
 	}
