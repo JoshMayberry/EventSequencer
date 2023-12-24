@@ -6,6 +6,7 @@ using UnityEngine;
 
 using jmayberry.CustomAttributes;
 using jmayberry.Spawner;
+using System;
 
 namespace jmayberry.EventSequencer {
     public abstract class SequenceBase : ISpawnable {
@@ -17,7 +18,7 @@ namespace jmayberry.EventSequencer {
 
         public abstract EventPriority GetCurrentEventPriority();
 
-        public abstract IEnumerator Start(IContext context);
+        public abstract IEnumerator Start(IContext context, Action<SequenceBase> callbackWhenFinished);
 
         public abstract IEnumerator OnCancel();
 

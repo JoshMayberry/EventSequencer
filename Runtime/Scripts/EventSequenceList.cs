@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +44,9 @@ namespace jmayberry.EventSequencer {
 			return (gameEvent == null) ? EventPriority.None : gameEvent.Priority;
 		}
 
-		public override IEnumerator Start(IContext context) {
+		public override IEnumerator Start(IContext context, Action<SequenceBase> callbackWhenFinished) {
 			this.currentIndex = 0;
-			return base.Start(context);
+			return base.Start(context, callbackWhenFinished);
 		}
 	}
 }

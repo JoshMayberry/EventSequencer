@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using jmayberry.CustomAttributes;
+
 namespace jmayberry.EventSequencer {
 	public class EventManagerBase : MonoBehaviour {
-		private SequenceBase currentSequence;
-		private Coroutine currentCoroutine;
+        private SequenceBase currentSequence;
+        private Coroutine currentCoroutine;
 
-		public override string ToString() {
+		[Readonly] [SerializeField] private bool isSequenceRunning;
+
+        public override string ToString() {
 			return $"<EventManagerBase:{this.GetHashCode()}>";
-        }
+		}
 
-        public void StartSequence(IContext context, SequenceBase sequence, bool hardStop = false) {
-			if (this.currentCoroutine != null) {
+		public void StartSequence(IContext context, SequenceBase sequence, bool hardStop = false) {
+			if (this.isSequenceRunning) {
 				if (!sequence.ShouldOverride(this.currentSequence)) {
 					return;
 				}
@@ -20,32 +24,39 @@ namespace jmayberry.EventSequencer {
 				this.StopSequence(this.currentSequence, this.currentCoroutine, hardStop);
 			}
 
-			this.currentSequence = sequence;
-			this.currentCoroutine = StartCoroutine(this.currentSequence.Start(context));
-        }
+			this.isSequenceRunning = true;
+            this.currentSequence = sequence;
+			this.currentCoroutine = StartCoroutine(this.currentSequence.Start(context, OnSequenceFinished));
+		}
 
-        public void StopSequence(bool hardStop = false) {
-            StopSequence(this.currentSequence, this.currentCoroutine, hardStop);
-        }
+		private void OnSequenceFinished(SequenceBase sequence) {
+			if (sequence == this.currentSequence) {
+				this.isSequenceRunning = false;
+			}
+		}
 
-        public void StopSequence(SequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
-            StartCoroutine(this.Cancel(sequence, coroutine, hardStop));
-            this.currentCoroutine = null;
-        }
+		public void StopSequence(bool hardStop = false) {
+			StopSequence(this.currentSequence, this.currentCoroutine, hardStop);
+		}
 
-        private IEnumerator Cancel(SequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
-            if (coroutine == null) {
-                yield break;
-            }
+		public void StopSequence(SequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
+			StartCoroutine(this.Cancel(sequence, coroutine, hardStop));
+			this.isSequenceRunning = false;
+		}
 
-            if (!hardStop && (sequence != null)) {
-                yield return sequence.OnCancel();
-            }
+		private IEnumerator Cancel(SequenceBase sequence, Coroutine coroutine, bool hardStop = false) {
+			if (coroutine == null) {
+				yield break;
+			}
 
-            StopCoroutine(coroutine);
-        }
+			if (!hardStop && (sequence != null)) {
+				yield return sequence.OnCancel();
+			}
 
-        public SequenceBase GetCurrentSequence() {
+			StopCoroutine(coroutine);
+		}
+
+		public SequenceBase GetCurrentSequence() {
 			return this.currentSequence;
 		}
 

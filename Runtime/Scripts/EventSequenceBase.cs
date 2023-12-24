@@ -6,6 +6,7 @@ using UnityEngine;
 
 using jmayberry.CustomAttributes;
 using jmayberry.Spawner;
+using System;
 
 namespace jmayberry.EventSequencer {
 	public abstract class EventSequenceBase : SequenceBase {
@@ -42,11 +43,13 @@ namespace jmayberry.EventSequencer {
 			}
 		}
 
-		public override IEnumerator Start(IContext context) {
+		public override IEnumerator Start(IContext context, Action<SequenceBase> callbackWhenFinished) {
 			foreach (EventBase gameEvent in this.YieldEvents()) {
 				yield return gameEvent.Execute(context);
 			}
-		}
+
+			callbackWhenFinished?.Invoke(this);
+        }
 
 		public override IEnumerator OnCancel() {
 			if (this.currentEvent != null) {

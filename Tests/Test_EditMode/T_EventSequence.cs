@@ -49,7 +49,7 @@ public class EventSequenceTests {
     [UnityTest]
 	public IEnumerator Start() {
 		var sequence = CreateTestSequence(EventPriority.High);
-		yield return sequence.Start(new TestContext());
+		yield return sequence.Start(new TestContext(), null);
 		Assert.AreEqual(0, sequence.eventQueue.Count);
 	}
 
@@ -59,7 +59,7 @@ public class EventSequenceTests {
 		Assert.AreEqual(0, context.count, "No events have run");
 
 		var sequence = CreateTestSequence(EventPriority.High, EventPriority.Medium, EventPriority.Low);
-		yield return sequence.Start(context);
+		yield return sequence.Start(context, null);
 		Assert.AreEqual(3, context.count, "3 events have run");
 	}
 }
